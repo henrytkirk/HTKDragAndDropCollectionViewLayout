@@ -143,6 +143,10 @@
     for (NSInteger i = 0; i < [self.collectionView numberOfSections]; i++) {
         totalItems += [self.collectionView numberOfItemsInSection:i];
     }
+    //When the totalItems%2 == 1,do this.
+    if (totalItems%2 == 1) {
+    totalItems=totalItems+1;
+    }
     // Determine how many rows we will have
     NSInteger rows = totalItems / self.numberOfItemsPerRow;
     // Determine height of collectionView
