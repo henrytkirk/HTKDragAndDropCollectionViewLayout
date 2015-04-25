@@ -57,12 +57,17 @@
 
 @implementation HTKDraggableCollectionViewCell
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self setupDraggableCell];
     }
     return self;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self setupDraggableCell];
 }
 
 #pragma mark - Cell Setup

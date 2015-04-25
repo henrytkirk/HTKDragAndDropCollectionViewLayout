@@ -48,6 +48,7 @@
     [super viewDidLoad];
 
     // Register cell
+    // If you are using Storyboards/Nibs, make sure you "registerNib:" instead.
     [self.collectionView registerClass:[HTKSampleCollectionViewCell class] forCellWithReuseIdentifier:HTKDraggableCollectionViewCellIdentifier];
     
     // Setup item size
