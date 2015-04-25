@@ -90,7 +90,6 @@
 }
 
 - (void)userDidEndDraggingCell:(UICollectionViewCell *)cell {
-    [super userDidEndDraggingCell:cell];
     
     HTKDragAndDropCollectionViewLayout *flowLayout = (HTKDragAndDropCollectionViewLayout *)self.collectionView.collectionViewLayout;
     
@@ -101,6 +100,9 @@
         [self.dataArray removeObjectAtIndex:flowLayout.draggedIndexPath.row];
         [self.dataArray insertObject:objectToMove atIndex:flowLayout.finalIndexPath.row];
     }
+    
+    // Reset
+    [flowLayout resetDragging];
 }
 
 @end
