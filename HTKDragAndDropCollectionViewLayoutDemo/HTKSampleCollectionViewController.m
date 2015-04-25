@@ -35,13 +35,21 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        // Create Array for Demo data and fill it with 50 items
+        // Create Array for Demo data and fill it with some items
         _dataArray = [NSMutableArray array];
-        for (NSUInteger i = 0; i < 50; i++) {
+        for (NSUInteger i = 0; i < 15; i++) {
             [_dataArray addObject:[NSString stringWithFormat:@"%lu", i]];
         }
+        [self setup];
     }
     return self;
+}
+
+- (void)setup {
+    // basic setup
+    self.title = @"Drag & Drop Demo";
+    // Add button that will "add" item to demo
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(userDidTapAddButton:)];
 }
 
 - (void)viewDidLoad {
@@ -60,7 +68,18 @@
     flowLayout.sectionInset = UIEdgeInsetsMake(20, 20, 20, 20);
 }
 
-#pragma mark UICollectionView Datasource/Delegate
+#pragma mark - User Actions
+
+- (void)userDidTapAddButton:(id)sender {
+    // Called when user taps the "+" button in nav bar
+    // Add another item to the demo
+    NSUInteger count = self.dataArray.count;
+    NSString *newItem = [NSString stringWithFormat:@"%lu", count];
+    [self.dataArray addObject:newItem];
+    [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:count inSection:0]]];
+}
+
+#pragma mark - UICollectionView Datasource/Delegate
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;

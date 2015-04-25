@@ -81,6 +81,12 @@
     return self;
 }
 
+- (void)invalidateLayout {
+    [super invalidateLayout];
+    // reset so we re-calc layout again
+    [self.itemArray removeAllObjects];
+}
+
 - (void)prepareLayout {
     [super prepareLayout];
 
@@ -193,8 +199,6 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     if (!CGRectEqualToRect(self.collectionView.bounds, newBounds)) {
-        // Purge our items array so we recalculate
-        [self.itemArray removeAllObjects];
         return YES;
     }
     return NO;

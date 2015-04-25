@@ -38,7 +38,8 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.mainViewController = [[HTKSampleCollectionViewController alloc] init];
-    self.window.rootViewController = self.mainViewController;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.mainViewController];
+    self.window.rootViewController = navController;
     
     [self.window makeKeyAndVisible];
 
