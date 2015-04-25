@@ -193,7 +193,6 @@
     // Determine how many items we can fit per row
     CGFloat collectionViewWidth = CGRectGetWidth(self.collectionView.bounds) - self.sectionInset.right - self.sectionInset.left;
     NSInteger numberOfItems = collectionViewWidth / (self.itemSize.width + _minimumInteritemSpacing);
-    
     return numberOfItems;
 }
 
@@ -201,7 +200,7 @@
     // return minimum item spacing
     CGFloat collectionViewWidth = CGRectGetWidth(self.collectionView.bounds) - self.sectionInset.right - self.sectionInset.left;
     CGFloat actualItemSpacing = MAX(_minimumInteritemSpacing, collectionViewWidth - (self.numberOfItemsPerRow * self.itemSize.width));
-    return actualItemSpacing;
+    return actualItemSpacing / self.numberOfItemsPerRow;
 }
 
 #pragma mark - Drag and Drop methods
