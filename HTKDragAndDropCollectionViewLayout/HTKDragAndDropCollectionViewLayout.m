@@ -84,7 +84,9 @@
 - (void)invalidateLayout {
     [super invalidateLayout];
     // reset so we re-calc layout again
-    [self.itemArray removeAllObjects];
+    if (!self.isDraggingCell) {
+        [self.itemArray removeAllObjects];
+    }
 }
 
 - (void)prepareLayout {
