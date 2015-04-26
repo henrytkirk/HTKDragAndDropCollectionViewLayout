@@ -156,7 +156,7 @@
         totalItems = totalItems + 1;
     }
     // Determine how many rows we will have
-    NSInteger rows = totalItems / self.numberOfItemsPerRow;
+    NSInteger rows = ceil((CGFloat)totalItems / self.numberOfItemsPerRow);
     // Determine height of collectionView
     CGFloat height = (rows * (self.itemSize.height + self.lineSpacing)) + self.sectionInset.top + self.sectionInset.bottom;
     
