@@ -112,7 +112,7 @@
 - (void)userDidEndDraggingCell:(UICollectionViewCell *)cell {
     
     HTKDragAndDropCollectionViewLayout *flowLayout = (HTKDragAndDropCollectionViewLayout *)self.collectionView.collectionViewLayout;
-    
+
     // Save our dragging changes if needed
     if (flowLayout.finalIndexPath != nil) {
         // Update datasource

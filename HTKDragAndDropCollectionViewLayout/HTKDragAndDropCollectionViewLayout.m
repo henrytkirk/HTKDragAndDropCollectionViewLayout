@@ -85,7 +85,7 @@
     [super invalidateLayout];
     // reset so we re-calc layout again
     if (!self.isDraggingCell) {
-        [self.itemArray removeAllObjects];
+       [self.itemArray removeAllObjects];
     }
 }
 
@@ -230,13 +230,13 @@
     UICollectionViewLayoutAttributes *attributes = self.itemDictionary[self.draggedIndexPath];
     attributes.frame = self.draggedCellFrame;
     
-    self.finalIndexPath = nil;
-    self.draggedIndexPath = nil;
-    self.draggedCellFrame = CGRectZero;
-    
     // Put the cell back animated.
     [UIView animateWithDuration:0.2 animations:^{
         [self invalidateLayout];
+    } completion:^(BOOL finished) {
+        self.finalIndexPath = nil;
+        self.draggedIndexPath = nil;
+        self.draggedCellFrame = CGRectZero;
     }];
 }
 
