@@ -208,7 +208,7 @@
 }
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
-    if (!CGRectEqualToRect(self.collectionView.bounds, newBounds)) {
+    if (!CGSizeEqualToSize(self.collectionView.bounds.size, newBounds.size)) {
         // reset so we re-calc entire layout again
         [self.itemArray removeAllObjects];
         return YES;
