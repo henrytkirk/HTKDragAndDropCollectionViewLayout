@@ -135,11 +135,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
             // Cause pan to cancel
             self.panGestureRecognizer.enabled = NO;
             self.panGestureRecognizer.enabled = YES;
-            // Set alpha back
-            self.alpha = 1.0;
-            if ([self.draggingDelegate respondsToSelector:@selector(userDidEndDraggingCell:)]) {
-                [self.draggingDelegate userDidEndDraggingCell:self];
-            }
             break;
         }
         default:

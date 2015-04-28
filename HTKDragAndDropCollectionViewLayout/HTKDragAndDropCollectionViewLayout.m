@@ -68,6 +68,12 @@
  */
 - (NSIndexPath *)indexPathBelowDraggedItemAtPoint:(CGPoint)point;
 
+/**
+ * Creates and inserts layout attributes for indexPath provided. Used
+ * for insertions into the collectionView.
+ */
+- (void)insertItemAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 @implementation HTKDragAndDropCollectionViewLayout
@@ -81,11 +87,11 @@
     return self;
 }
 
-- (void)invalidateLayout {
-    [super invalidateLayout];
-    // reset so we re-calc layout again
-    if (!self.isDraggingCell) {
-       [self.itemArray removeAllObjects];
+- (void)invalidateLayoutWithContext:(UICollectionViewLayoutInvalidationContext *)context {
+    [super invalidateLayoutWithContext:context];
+    // reset so we re-calc entire layout again
+    if (context.invalidateEverything) {
+        [self.itemArray removeAllObjects];
     }
 }
 
@@ -180,8 +186,10 @@
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewLayoutAttributes *layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-    
+    UICollectionViewLayoutAttributes *layoutAttributes = self.itemDictionary[indexPath];
+    if (!layoutAttributes) {
+        layoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+    }
     [self applyDragAttributes:layoutAttributes];
     
     return layoutAttributes;
@@ -201,9 +209,29 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     if (!CGRectEqualToRect(self.collectionView.bounds, newBounds)) {
+        // reset so we re-calc entire layout again
+        [self.itemArray removeAllObjects];
         return YES;
     }
     return NO;
+}
+
+- (void)prepareForCollectionViewUpdates:(NSArray *)updateItems {
+    [updateItems enumerateObjectsUsingBlock:^(UICollectionViewUpdateItem *updateItem, NSUInteger idx, BOOL *stop) {
+        switch (updateItem.updateAction) {
+            case UICollectionUpdateActionInsert: {
+                // insert new item
+                [self insertItemAtIndexPath:updateItem.indexPathAfterUpdate];
+                break;
+            }
+            case UICollectionUpdateActionDelete:
+            case UICollectionUpdateActionMove:
+            case UICollectionUpdateActionNone:
+            case UICollectionUpdateActionReload:
+            default:
+                break;
+        }
+    }];
 }
 
 #pragma mark - Getters
@@ -229,14 +257,14 @@
     // Set our dragged cell back to it's "home" frame
     UICollectionViewLayoutAttributes *attributes = self.itemDictionary[self.draggedIndexPath];
     attributes.frame = self.draggedCellFrame;
-    
+
+    self.finalIndexPath = nil;
+    self.draggedIndexPath = nil;
+    self.draggedCellFrame = CGRectZero;
+
     // Put the cell back animated.
     [UIView animateWithDuration:0.2 animations:^{
         [self invalidateLayout];
-    } completion:^(BOOL finished) {
-        self.finalIndexPath = nil;
-        self.draggedIndexPath = nil;
-        self.draggedCellFrame = CGRectZero;
     }];
 }
 
@@ -353,6 +381,30 @@
     }];
 
     return indexPathBelow;
+}
+
+- (void)insertItemAtIndexPath:(NSIndexPath *)indexPath {
+    // get attributes of item before this inserted one
+    UICollectionViewLayoutAttributes *prevAttributes = self.itemArray[indexPath.row - 1];
+    
+    // Check our values
+    CGFloat xValue = CGRectGetMaxX(prevAttributes.frame) + self.minimumInteritemSpacing;
+    CGFloat yValue = CGRectGetMinY(prevAttributes.frame);
+    CGFloat collectionViewWidth = CGRectGetWidth(self.collectionView.bounds) - self.sectionInset.right;
+    if ((xValue + self.itemSize.width) > collectionViewWidth) {
+        // reset our x, increment our y.
+        xValue = self.sectionInset.left;
+        yValue += self.itemSize.height + self.lineSpacing;
+    }
+    
+    // create attributes
+    UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:indexPath];
+    // Create frame
+    attributes.frame = CGRectMake(xValue, yValue, self.itemSize.width, self.itemSize.height);
+    
+    // add to our dict
+    self.itemDictionary[indexPath] = attributes;
+    [self.itemArray addObject:attributes];
 }
 
 @end
