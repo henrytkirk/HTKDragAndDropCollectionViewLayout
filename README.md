@@ -8,7 +8,7 @@ Custom UICollectionViewLayout that works together with a custom UICollectionView
 
 [CocoaPods](http://cocoapods.org) is the recommended way to add HTKDragAndDropCollectionViewLayout to your project.
 
-1. Add a pod entry for HTKDragAndDropCollectionViewLayout to your Podfile `pod 'HTKDragAndDropCollectionViewLayout', '~> 0.0.1'`
+1. Add a pod entry for HTKDragAndDropCollectionViewLayout to your Podfile `pod 'HTKDragAndDropCollectionViewLayout'`
 2. Install the pod(s) by running `pod install`.
 3. Subclass `HTKDragAndDropCollectionViewController`.
 4. Setup `HTKDragAndDropCollectionViewLayout` properties (itemSize, lineSpacing, etc).
@@ -25,5 +25,7 @@ Custom UICollectionViewLayout that works together with a custom UICollectionView
 
 ## Change log:
 v0.0.1: Initial project commit
+v0.1.0 - v0.1.2: Bug fixes - Don't use this version, I broke it.
+v0.1.3: Current stable version. This version is greatly enhanced over the original version. It now supports rotation, and inserting of items. Currently inserting only works to the "end" of the data source. So, if you have 10 items in your collectionView and wish to insert, adding the item to indexPath 0,10 will work fine, while adding to indexPath 0,5 would not. This should be corrected pretty soon.
 
 Questions? Email: henrytkirk@gmail.com or Web: http://www.henrytkirk.info
