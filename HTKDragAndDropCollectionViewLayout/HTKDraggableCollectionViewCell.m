@@ -131,6 +131,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         case UIGestureRecognizerStateEnded:
         case UIGestureRecognizerStateFailed:
         case UIGestureRecognizerStateCancelled: {
+            // set alpha back
+            self.alpha = 1.0;
             self.allowPan = NO;
             // Cause pan to cancel
             self.panGestureRecognizer.enabled = NO;
