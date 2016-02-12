@@ -4,7 +4,7 @@ HTKDragAndDropCollectionViewLayout
 Custom UICollectionViewLayout that works together with a custom UICollectionViewCell to provide drag and drop for a UICollectionView. Works just like UITableView drag and drop. What's unique about this approach is that it does not need to create a "ghost" or "dummy" cell to provide the drag and drop functionality. I believe this method is simpler and less complex for the majority of use cases.
 
 ## Adding to your project:
-### Cocoapods
+### CocoaPods
 
 [CocoaPods](http://cocoapods.org) is the recommended way to add HTKDragAndDropCollectionViewLayout to your project.
 
