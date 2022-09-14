@@ -90,7 +90,7 @@
 - (void)invalidateLayoutWithContext:(UICollectionViewLayoutInvalidationContext *)context {
     [super invalidateLayoutWithContext:context];
     // reset so we re-calc entire layout again
-    if (context.invalidateEverything) {
+    if (context.invalidateEverything || context.invalidateDataSourceCounts) {
         [self.itemArray removeAllObjects];
     }
 }
@@ -384,6 +384,9 @@
 }
 
 - (void)insertItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (!indexPath) {
+        return;
+    }
     // get attributes of item before this inserted one
     UICollectionViewLayoutAttributes *prevAttributes = self.itemArray[indexPath.row - 1];
     
