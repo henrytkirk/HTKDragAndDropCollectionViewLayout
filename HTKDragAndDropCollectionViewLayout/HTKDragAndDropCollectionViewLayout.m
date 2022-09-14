@@ -90,7 +90,7 @@
 - (void)invalidateLayoutWithContext:(UICollectionViewLayoutInvalidationContext *)context {
     [super invalidateLayoutWithContext:context];
     // reset so we re-calc entire layout again
-    if (context.invalidateEverything) {
+    if (context.invalidateEverything || context.invalidateDataSourceCounts) {
         [self.itemArray removeAllObjects];
     }
 }
@@ -384,8 +384,19 @@
 }
 
 - (void)insertItemAtIndexPath:(NSIndexPath *)indexPath {
-    // get attributes of item before this inserted one
-    UICollectionViewLayoutAttributes *prevAttributes = self.itemArray[indexPath.row - 1];
+    if (!indexPath) {
+        return;
+    }
+
+    // get attributes of item before this inserted one.
+    UICollectionViewLayoutAttributes *prevAttributes;
+    NSInteger prevIndex = indexPath.row - 1;
+    if (prevIndex <= 0) {
+        prevAttributes = [[UICollectionViewLayoutAttributes alloc] init];
+        prevAttributes.frame = CGRectZero;
+    } else {
+        prevAttributes = self.itemArray[prevIndex];
+    }
     
     // Check our values
     CGFloat xValue = CGRectGetMaxX(prevAttributes.frame) + self.minimumInteritemSpacing;
