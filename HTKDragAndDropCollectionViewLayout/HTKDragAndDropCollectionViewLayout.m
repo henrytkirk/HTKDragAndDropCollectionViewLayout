@@ -388,7 +388,7 @@
         return;
     }
 
-    // get attributes of item before this inserted one.
+    // Get attributes of item before this inserted one.
     UICollectionViewLayoutAttributes *prevAttributes;
     NSInteger prevIndex = indexPath.row - 1;
     if (prevIndex <= 0) {
